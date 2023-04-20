@@ -5,8 +5,33 @@
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
-    <string name="previous">Previous</string>
+    <string name="previous">Go back</string>
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+
+    <string name="first_name_hint">First Name</string>
+    <string name="last_name_hint">Last Name</string>
+    <string name="email_hint">Email</string>
+    <string name="phone_hint">Phone</string>
+    <string name="password_hint">Password</string>
+    <string name="confirm_password_hint">Confirm password</string>
+    <string name="submit_button">SUBMIT</string>
+    <string name="show_button">SHOW</string>
+    <string name="show_cats">CATS</string>
+    <string name="register_success">You have been registered!</string>
+    <string name="first_name_valid">Please, enter valid first name</string>
+    <string name="last_name_valid">Please, enter valid last name</string>
+    <string name="phone_valid">Please, enter valid phone</string>
+    <string name="email_valid">Please, enter valid email</string>
+    <string name="password_valid">Please, enter valid password</string>
+    <string name="header">Header</string>
+    <string name="desc">Description.</string>
+    <string name="register_error">Registration has been failed.</string>
+    <string name="favourite_button_action_add">Add to the favourites</string>
+    <string name="favourite_button_action_rm">Remove from the favourites</string>
+    <string name="saved">Saved successfully!</string>
+    <string name="loaded">Loaded successfully!</string>
+    <string name="button_content_desc">Favourites</string>
 </resources>

@@ -2,13 +2,16 @@ package com.example.kittens
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.kittens.databinding.FragmentSecondBinding
 import com.example.kittens.models.Cat
+import com.example.kittens.recycler.KittensAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -50,23 +53,28 @@ class SecondFragment : Fragment() {
     }
 
     private fun getCats() {
-        val call: Call<List<Cat>>? = App.catService?.getCatsListLimit20()
+        val call: Call<MutableList<Cat>>? = App.catService?.getCatsListLimit20()
         Log.d("FirstFragment", "getCats(), call: $call")
-        call?.enqueue(object : Callback<List<Cat>> {
+        call?.enqueue(object : Callback<MutableList<Cat>> {
             override fun onResponse(
-                call: Call<List<Cat>>,
-                response: Response<List<Cat>>
+                call: Call<MutableList<Cat>>,
+                response: Response<MutableList<Cat>>
             ) {
                 Log.d("FirstFragment", "onResponse() callback")
-                val resultCats: List<Cat>? = response.body()
+                val resultCats: MutableList<Cat>? = response.body()
                 if (resultCats != null) {
                     for (resultCat in resultCats) {
                         Log.d("FirstFragment","Result cat: $resultCat")
                     }
                 }
+
+                val recyclerView: RecyclerView = binding.kittensRv
+                val recyclerViewAdapter = KittensAdapter(resultCats)
+                recyclerView.adapter = recyclerViewAdapter
+                recyclerView.layoutManager = LinearLayoutManager(activity)
             }
 
-            override fun onFailure(call: Call<List<Cat>>, t: Throwable) {
+            override fun onFailure(call: Call<MutableList<Cat>>, t: Throwable) {
                 Log.i("Cats", "Something went wrong.")
             }
         })
