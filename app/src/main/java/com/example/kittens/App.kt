@@ -2,9 +2,8 @@ package com.example.kittens
 
 import android.app.Application
 import com.example.kittens.networking.ICatService
-import com.example.kittens.networking.LoggingInterceptor
-import com.example.kittens.networking.ResponseLoggingInterceptor
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -20,8 +19,12 @@ class App : Application() {
     }
 
     private fun initRetrofit() {
+        val loggingInterceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+
         val client: OkHttpClient = OkHttpClient.Builder()
-            .addInterceptor(LoggingInterceptor())
+            .addInterceptor(loggingInterceptor)
             .build()
 
         val builder = Retrofit.Builder()

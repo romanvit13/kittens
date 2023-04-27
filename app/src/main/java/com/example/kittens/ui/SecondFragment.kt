@@ -1,4 +1,4 @@
-package com.example.kittens
+package com.example.kittens.ui
 
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.kittens.App
+import com.example.kittens.R
 import com.example.kittens.databinding.FragmentSecondBinding
 import com.example.kittens.models.Cat
 import com.example.kittens.recycler.KittensAdapter
@@ -75,7 +77,7 @@ class SecondFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<MutableList<Cat>>, t: Throwable) {
-                Log.i("Cats", "Something went wrong.")
+                t.message?.let { Log.e("FirstFragment", "Message: $it, cause: ${t.cause?.message}") }
             }
         })
     }
