@@ -6,17 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.room.ColumnInfo
 import com.example.kittens.App
 import com.example.kittens.databinding.FragmentBreedsBinding
 import com.example.kittens.models.Breed
+import com.example.kittens.models.Weight
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class BreedsFragment: Fragment() {
-
+class BreedsFragment : Fragment() {
     private var _binding: FragmentBreedsBinding? = null
     private val binding get() = _binding!!
+
+    private var breeds: List<Breed>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,6 +32,14 @@ class BreedsFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.saveToDbBtn.setOnClickListener {
+            val backgroundThread = Thread {
+                insertBreedsToDb()
+            }
+
+            backgroundThread.start()
+        }
 
         getBreeds()
     }
@@ -46,6 +57,7 @@ class BreedsFragment: Fragment() {
                 response: Response<MutableList<Breed>>
             ) {
                 val breedsList = response.body()
+                breeds = breedsList
                 val breedsString = StringBuilder()
                 if (breedsList != null) {
                     for (breed in breedsList) {
@@ -63,5 +75,31 @@ class BreedsFragment: Fragment() {
                 }
             }
         })
+    }
+
+    private fun insertBreedsToDb() {
+        val breedsList = breeds
+        if (breedsList == null) {
+            Log.d("BreedsFragment", "Breeds are null")
+            return
+        }
+
+        for (breed in breedsList) {
+            Log.d("BreedsFragment", "Breed: $breed")
+            breed.apply {
+                val breedDb = com.example.kittens.room.models.Breed(
+                    id,
+                    name,
+                    temperament,
+                    origin,
+                    countryCodes,
+                    countryCode,
+                    lifeSpan,
+                    "wikipediaUrl"
+                )
+
+                App.appDatabase?.breedDao()?.insertAll(breedDb)
+            }
+        }
     }
 }
