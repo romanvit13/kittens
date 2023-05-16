@@ -21,7 +21,7 @@
         android:id="@+id/scrollView2"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/save_to_db_btn"
+        app:layout_constraintBottom_toTopOf="@id/load_from_db"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/breeds_header">
@@ -44,6 +44,15 @@
                 app:layout_constraintTop_toBottomOf="@id/breeds_header" />
         </LinearLayout>
     </ScrollView>
+
+    <Button
+        android:id="@+id/load_from_db"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Load from database"
+        app:layout_constraintBottom_toTopOf="@+id/save_to_db_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/save_to_db_btn"
