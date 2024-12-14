@@ -2,7 +2,6 @@ package com.example.kittens.models
 
 import com.google.gson.annotations.SerializedName
 
-
 data class Breed(
     val weight: Weight,
     val id: String,
