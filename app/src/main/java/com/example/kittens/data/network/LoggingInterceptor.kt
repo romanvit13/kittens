@@ -1,4 +1,4 @@
-package com.example.kittens.networking
+package com.example.kittens.data.network
 
 import android.util.Log
 import com.example.kittens.common.networkingTag

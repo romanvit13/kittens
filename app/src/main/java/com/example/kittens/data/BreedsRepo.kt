@@ -1,8 +1,8 @@
-package com.example.kittens.repo
+package com.example.kittens.data
 
 import android.util.Log
-import com.example.kittens.App
-import com.example.kittens.models.Breed
+import com.example.kittens.core.App
+import com.example.kittens.data.network.models.Breed
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,7 +31,7 @@ class BreedsRepo {
     }
 
     fun loadBreedsFromDb() {
-        var breeds: List<com.example.kittens.room.models.Breed>? = null
+        var breeds: List<com.example.kittens.data.database.models.Breed>? = null
         val runnable = {
             breeds = App.appDatabase?.breedDao()?.getAll()
         }

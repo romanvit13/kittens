@@ -1,10 +1,10 @@
-package com.example.kittens.ui
+package com.example.kittens.presentation.ui
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.kittens.App
-import com.example.kittens.models.Breed
+import com.example.kittens.core.App
+import com.example.kittens.data.network.models.Breed
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -34,7 +34,7 @@ class BreedsViewModel : ViewModel() {
     }
 
     fun loadBreedsFromDb() {
-        var breeds: List<com.example.kittens.room.models.Breed>? = null
+        var breeds: List<com.example.kittens.data.database.models.Breed>? = null
         val runnable = {
             breeds = App.appDatabase?.breedDao()?.getAll()
         }

@@ -1,4 +1,4 @@
-package com.example.kittens.ui
+package com.example.kittens.presentation.ui
 
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar

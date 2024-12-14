@@ -1,8 +1,9 @@
-package com.example.kittens.room.models
+package com.example.kittens.data.database
 
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
+import com.example.kittens.data.database.models.Breed
 
 @Dao
 interface BreedDao {

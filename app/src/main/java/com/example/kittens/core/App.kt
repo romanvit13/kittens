@@ -1,12 +1,12 @@
-package com.example.kittens
+package com.example.kittens.core
 
 import android.app.Application
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import androidx.room.Room
-import com.example.kittens.networking.ICatService
-import com.example.kittens.room.models.AppDatabase
+import com.example.kittens.data.network.ICatService
+import com.example.kittens.data.database.AppDatabase
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

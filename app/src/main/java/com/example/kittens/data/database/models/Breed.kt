@@ -1,4 +1,4 @@
-package com.example.kittens.room.models
+package com.example.kittens.data.database.models
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

@@ -1,4 +1,4 @@
-package com.example.kittens.ui
+package com.example.kittens.presentation.ui
 
 import android.os.Bundle
 import android.util.Log
@@ -9,11 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kittens.App
+import com.example.kittens.core.App
 import com.example.kittens.R
 import com.example.kittens.databinding.FragmentSecondBinding
-import com.example.kittens.models.Cat
-import com.example.kittens.recycler.KittensAdapter
+import com.example.kittens.data.network.models.Cat
+import com.example.kittens.presentation.recycler.KittensAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

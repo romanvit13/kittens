@@ -1,7 +1,7 @@
-package com.example.kittens.networking
+package com.example.kittens.data.network
 
-import com.example.kittens.models.Breed
-import com.example.kittens.models.Cat
+import com.example.kittens.data.network.models.Breed
+import com.example.kittens.data.network.models.Cat
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Headers
