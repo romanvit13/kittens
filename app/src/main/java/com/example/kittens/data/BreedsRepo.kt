@@ -1,33 +1,16 @@
 package com.example.kittens.data
 
-import android.util.Log
 import com.example.kittens.core.App
-import com.example.kittens.data.network.models.Breed
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.example.kittens.data.network.ICatService
+import com.example.kittens.domain.IBreedsRepo
+import com.example.kittens.domain.models.Breed as BreedDomain
 
-class BreedsRepo {
-    private var breedsList: List<Breed>? = null
+class BreedsRepo(val catsService: ICatService): IBreedsRepo {
+    private var breedsList: List<BreedDomain>? = null
 
-    fun obtainBreeds() {
-        val call: Call<MutableList<Breed>>? = App.catService?.getAllBreeds()
-        call?.enqueue(object : Callback<MutableList<Breed>> {
-            override fun onResponse(
-                call: Call<MutableList<Breed>>,
-                response: Response<MutableList<Breed>>
-            ) {
-                val breedsList = response.body()
-                this@BreedsRepo.breedsList = breedsList
-                breedsList?.let {  }
-            }
-
-            override fun onFailure(call: Call<MutableList<Breed>>, t: Throwable) {
-                t.message?.let {
-                    Log.e("BreedsFragment", it)
-                }
-            }
-        })
+    override suspend fun obtainBreeds(): MutableList<BreedDomain> {
+        val domainBreedsList = catsService.getAllBreedsNew().map { BreedDomain(it.name) }
+        return domainBreedsList.toMutableList()
     }
 
     fun loadBreedsFromDb() {
