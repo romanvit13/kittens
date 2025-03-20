@@ -32,7 +32,7 @@ class BreedsFragment : Fragment() {
         }
 
         binding.loadFromDb.setOnClickListener {
-            viewModel?.loadBreedsFromDb()
+            //viewModel?.loadBreedsFromDb()
         }
 
         viewModel?.obtainBreeds()

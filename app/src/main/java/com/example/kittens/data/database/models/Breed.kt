@@ -19,7 +19,7 @@ data class Breed(
     @ColumnInfo("country_code")
     val countryCode: String,
     @ColumnInfo("life_span")
-    val lifeSpan: String,
+    val lifeSpan: String?,
     @ColumnInfo("wikipedia_url")
-    val wikipediaUrl: String = "",
+    val wikipediaUrl: String? = "",
 )

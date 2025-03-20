@@ -8,8 +8,8 @@ import com.example.kittens.data.database.models.Breed
 @Dao
 interface BreedDao {
     @Query("SELECT * FROM breed")
-    fun getAll(): List<Breed>
+    suspend fun getAll(): List<Breed>
 
     @Upsert
-    fun insertAll(vararg breeds: Breed)
+    suspend fun insertAll(vararg breeds: Breed)
 }
