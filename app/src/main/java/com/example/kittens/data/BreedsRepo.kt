@@ -15,8 +15,8 @@ class BreedsRepo(
     override suspend fun obtainBreeds(): MutableList<BreedDomain> {
         if (networkUtils.isNetworkAvailable()) {
             val networkBreedsList = catsService.getAllBreedsNew()
-            val domainBreedsList = networkBreedsList.map { BreedDomain(it.name) }
             val databaseBreedsList = breedMapper.mapToDatabase(networkBreedsList)
+            val domainBreedsList = breedMapper.mapToDomain(databaseBreedsList)
 
             catsDao.insertAll(breeds = databaseBreedsList.toTypedArray())
             return domainBreedsList.toMutableList()
