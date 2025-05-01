@@ -10,33 +10,50 @@
         android:id="@+id/textview_first"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
         android:text="Kittens app"
         android:textSize="26sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/show_cats"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/show_cats"
+        android:id="@+id/show_cats_new"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="show random cats"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="36dp"
+        android:text="Random cats new"
+        app:layout_constraintBottom_toTopOf="@+id/open_breeds"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textview_first" />
+        app:layout_constraintTop_toBottomOf="@+id/textview_first"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <Button
         android:id="@+id/open_breeds"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Obtain breeds info"
+        android:layout_marginTop="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/show_cats_old"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/show_cats_new" />
 
+    <Button
+        android:id="@+id/show_cats_old"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Random cats old"
+        android:layout_marginTop="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/show_cats" />
+        app:layout_constraintTop_toBottomOf="@+id/open_breeds" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

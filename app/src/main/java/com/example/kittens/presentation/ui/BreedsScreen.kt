@@ -17,9 +17,8 @@ import com.example.kittens.domain.models.Breed
 @Composable
 fun BreedsScreen(viewModel: BreedsViewModel = viewModel()) {
     val breeds by viewModel.breeds.observeAsState(initial = emptyList())
-    viewModel.obtainBreeds() // Trigger data update
 
-    BreedList(breeds) // Display the data
+    BreedList(breeds)
 }
 
 @Composable

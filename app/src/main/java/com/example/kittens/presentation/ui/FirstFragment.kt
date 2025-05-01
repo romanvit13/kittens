@@ -33,8 +33,12 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.showCats.setOnClickListener {
+        binding.showCatsOld.setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+        }
+
+        binding.showCatsNew.setOnClickListener {
+            findNavController().navigate(R.id.action_FirstFragment_to_CatsFragment)
         }
 
         binding.openBreeds.setOnClickListener {

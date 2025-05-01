@@ -9,9 +9,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.kittens.R
-import com.example.kittens.data.network.models.Cat
+import com.example.kittens.domain.models.Cat
 
 class KittensAdapter(cats: MutableList<Cat>?) : RecyclerView.Adapter<KittensAdapter.ViewHolder>() {
     private val TAG = "RecyclerViewAdapter"
@@ -36,6 +37,7 @@ class KittensAdapter(cats: MutableList<Cat>?) : RecyclerView.Adapter<KittensAdap
             .asBitmap()
             .load(mCats!![viewHolder.adapterPosition].url)
             .apply(glideOptions.centerCrop())
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(viewHolder.mImageView)
 
         viewHolder.mTextView.text = mCats!![viewHolder.adapterPosition].id

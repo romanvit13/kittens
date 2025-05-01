@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,31 +23,33 @@ import retrofit2.Response
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
 class SecondFragment : Fragment() {
-
+    private lateinit var viewModel: CatsViewModel
     private var _binding: FragmentSecondBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-
+    ): View {
+        viewModel = ViewModelProvider(this)[CatsViewModel::class.java]
         _binding = FragmentSecondBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.buttonSecond.setOnClickListener {
-            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
         }
 
-        getCats()
+        viewModel.obtainCats()
+
+        viewModel.cats.observe(viewLifecycleOwner) {
+            val recyclerView: RecyclerView = binding.kittensRv
+            val recyclerViewAdapter = KittensAdapter(it.toMutableList())
+            recyclerView.adapter = recyclerViewAdapter
+            recyclerView.layoutManager = LinearLayoutManager(activity)
+        }
     }
 
     override fun onDestroyView() {
@@ -54,7 +57,7 @@ class SecondFragment : Fragment() {
         _binding = null
     }
 
-    private fun getCats() {
+    private fun getCatsOld() {
         val call: Call<MutableList<Cat>>? = App.catService?.getCatsListLimit20()
         Log.d("FirstFragment", "getCats(), call: $call")
         call?.enqueue(object : Callback<MutableList<Cat>> {
@@ -69,11 +72,6 @@ class SecondFragment : Fragment() {
                         Log.d("FirstFragment","Result cat: $resultCat")
                     }
                 }
-
-                val recyclerView: RecyclerView = binding.kittensRv
-                val recyclerViewAdapter = KittensAdapter(resultCats)
-                recyclerView.adapter = recyclerViewAdapter
-                recyclerView.layoutManager = LinearLayoutManager(activity)
             }
 
             override fun onFailure(call: Call<MutableList<Cat>>, t: Throwable) {

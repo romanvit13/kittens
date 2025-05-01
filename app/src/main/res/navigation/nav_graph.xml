@@ -17,7 +17,11 @@
         <action
             android:id="@+id/action_FirstFragment_to_breedsFragment"
             app:destination="@id/breedsFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_CatsFragment"
+            app:destination="@id/CatsFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/SecondFragment"
         android:name="com.example.kittens.presentation.ui.SecondFragment"
@@ -28,8 +32,15 @@
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/breedsFragment"
         android:name="com.example.kittens.presentation.ui.BreedsFragment"
         android:label="BreedsFragment" />
+
+    <fragment
+        android:id="@+id/CatsFragment"
+        android:name="com.example.kittens.presentation.ui.CatsFragment"
+        android:label="CatsFragment" />
+
 </navigation>

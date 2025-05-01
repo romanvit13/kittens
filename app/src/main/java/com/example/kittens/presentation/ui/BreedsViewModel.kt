@@ -12,16 +12,20 @@ import com.example.kittens.domain.models.Breed
 import kotlinx.coroutines.launch
 
 class BreedsViewModel(private val context: Application) : AndroidViewModel(context) {
-    private val catService = App.catService
-    private val catDao = App.appDatabase?.breedDao()
+    private val breedService = App.catService
+    private val breedDao = App.appDatabase?.breedDao()
 
     val breeds = MutableLiveData<List<Breed>>()
     private var breedsList: List<Breed>? = null
 
+    init {
+        obtainBreeds()
+    }
+
     fun obtainBreeds() {
         viewModelScope.launch {
-            if (catDao != null && catService != null) {
-                val repo = BreedsRepo(catService, catDao, BreedMapper(), NetworkUtils(context))
+            if (breedDao != null && breedService != null) {
+                val repo = BreedsRepo(breedService, breedDao, BreedMapper(), NetworkUtils(context))
                 breedsList = repo.obtainBreeds()
                 breedsList?.let { breeds.postValue(it) }
             }
