@@ -13,9 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.kittens.domain.models.Breed
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun BreedsScreen(viewModel: BreedsViewModel = viewModel()) {
+fun BreedsScreen(viewModel: BreedsViewModel = koinViewModel<BreedsViewModel>()) {
     val breeds by viewModel.breeds.observeAsState(initial = emptyList())
 
     BreedList(breeds)

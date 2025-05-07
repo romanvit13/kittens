@@ -22,6 +22,7 @@ class BreedMapper {
 
     fun mapToDomain(databaseBreeds: List<BreedDatabase>): List<BreedDomain> {
         return databaseBreeds.map { BreedDomain(
+            it.id,
             it.name,
             it.temperament,
             it.origin,

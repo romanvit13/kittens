@@ -27,9 +27,10 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.kittens.domain.models.Cat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun CatsScreen(viewModel: CatsViewModel = viewModel()) {
+fun CatsScreen(viewModel: CatsViewModel = koinViewModel<CatsViewModel>()) {
     val cats by viewModel.cats.observeAsState(initial = emptyList())
 
     CatsList(cats)

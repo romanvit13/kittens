@@ -18,11 +18,12 @@ class CatsRepo(
             val databaseCatsList = catsMapper.mapNetworkToDatabase(networkCatsList)
             val domainCatsList = catsMapper.mapNetworkToDomain(networkCatsList)
 
-            catsDao.insertAll(cats = databaseCatsList.toTypedArray())
+            catsDao.deleteAllCats()
+            catsDao.insertCats(databaseCatsList.cats)
             return domainCatsList.toMutableList()
         } else {
-            val databaseCatsList = catsDao.getAll()
-            val domainCatsList = catsMapper.mapDatabaseToDomain(databaseCatsList)
+            val databaseCatsList = catsDao.getCatsWithBreeds()
+            val domainCatsList = catsMapper.mapCatsWithBreedsToDomain(databaseCatsList)
             return domainCatsList.toMutableList()
         }
     }
