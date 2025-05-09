@@ -1,45 +1,41 @@
 package com.example.kittens.presentation.ui
 
-import android.graphics.Bitmap
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.kittens.domain.models.Cat
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun CatsScreen(viewModel: CatsViewModel = koinViewModel<CatsViewModel>()) {
-    val cats by viewModel.cats.observeAsState(initial = emptyList())
-
+fun CatsScreen(viewModel: CatsViewModel = koinViewModel()) {
+    val cats by viewModel.cats.collectAsState()
     CatsList(cats)
 }
 
 @Composable
 fun CatsList(cats: List<Cat>) {
-    LazyColumn {
-        items(cats) { cat ->
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
+        items(cats, key = { it.id }) { cat ->
             CatItem(cat)
         }
     }
@@ -51,45 +47,43 @@ fun CatItem(cat: Cat) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            GlideImageLoader(cat.url)
-            Text(text = cat.id, style = MaterialTheme.typography.titleMedium)
-            Text(text = cat.height.toString(), style = MaterialTheme.typography.bodyMedium)
-            Text(text = cat.width.toString(), style = MaterialTheme.typography.bodyMedium)
+        Column {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current).data(cat.url).crossfade(true)
+                    .build(),
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(300.dp),
+                contentScale = ContentScale.Crop // Optional, affects how it fits in the Composable
+            )
+
+            Column(Modifier.padding(20.dp)) {
+                Text(text = "ID: ${cat.id}", style = MaterialTheme.typography.titleLarge)
+                Text(text = "Height: ${cat.height}", style = MaterialTheme.typography.bodyLarge)
+                Text(text = "Width: ${cat.width}", style = MaterialTheme.typography.bodyLarge)
+            }
         }
     }
 }
 
+
 @Composable
-fun GlideImageLoader(imageUrl: String) {
-    val context = LocalContext.current
-    val imageBitmap = remember {
-        mutableStateOf<Bitmap?>(null)
-    }
+fun ShimmerBox() {
+    val infiniteTransition = rememberInfiniteTransition(label = "shimmer")
+    val alpha by infiniteTransition.animateFloat(
+        initialValue = 0.3f, targetValue = 0.8f, animationSpec = infiniteRepeatable(
+            animation = tween(1000, easing = LinearEasing), repeatMode = RepeatMode.Reverse
+        ), label = "alpha"
+    )
 
-    // Load images using Glide
-    LaunchedEffect(imageUrl) {
-        val glideOptions = RequestOptions()
-        val bitmap = withContext(Dispatchers.IO) {
-            Glide.with(context)
-                .asBitmap()
-                .load(imageUrl)
-                .apply(glideOptions.centerCrop())
-                .submit()
-                .get()
-        }
-        imageBitmap.value = bitmap
-    }
-
-    // Display the image
-    imageBitmap.value?.let { bitmap ->
-        Image(
-            bitmap = bitmap.asImageBitmap(),
-            contentDescription = null,
-            modifier = Modifier
-                .fillMaxWidth()
-        )
-    }
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(180.dp)
+            .background(Color.LightGray.copy(alpha = alpha), RoundedCornerShape(8.dp))
+    ) {}
 }

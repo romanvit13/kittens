@@ -7,6 +7,6 @@ import org.koin.dsl.module
 
 val viewModelModule = module {
     // ViewModel
-    viewModel { CatsViewModel(get()) }
+    viewModel { CatsViewModel(get(), get()) }
     viewModel { BreedsViewModel(get()) }
 }
