@@ -65,6 +65,12 @@ fun CatItem(cat: Cat) {
                 Text(text = "ID: ${cat.id}", style = MaterialTheme.typography.titleLarge)
                 Text(text = "Height: ${cat.height}", style = MaterialTheme.typography.bodyLarge)
                 Text(text = "Width: ${cat.width}", style = MaterialTheme.typography.bodyLarge)
+                if (!cat.breeds.isNullOrEmpty()) {
+                    val firstBreed = cat.breeds[0]
+                    Text(text = firstBreed.name, style = MaterialTheme.typography.bodyLarge)
+                    Text(text = firstBreed.origin, style = MaterialTheme.typography.bodyLarge)
+                    Text(text = firstBreed.temperament, style = MaterialTheme.typography.bodyLarge)
+                }
             }
         }
     }

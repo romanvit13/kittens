@@ -10,19 +10,20 @@ class BreedsRepo(
     private val catsService: ICatService,
     private val catsDao: BreedDao,
     private val breedMapper: BreedMapper,
-    private val networkUtils: NetworkUtils) : IBreedsRepo {
+    private val networkUtils: NetworkUtils
+) : IBreedsRepo {
 
     override suspend fun obtainBreeds(): MutableList<BreedDomain> {
         if (networkUtils.isNetworkAvailable()) {
             val networkBreedsList = catsService.getAllBreedsNew()
-            val databaseBreedsList = breedMapper.mapToDatabase(networkBreedsList)
-            val domainBreedsList = breedMapper.mapToDomain(databaseBreedsList)
+            val databaseBreedsList = breedMapper.mapNetworkToDatabase(networkBreedsList)
+            val domainBreedsList = breedMapper.mapDatabaseToDomain(databaseBreedsList)
 
             catsDao.insertAll(breeds = databaseBreedsList.toTypedArray())
             return domainBreedsList.toMutableList()
         } else {
             val databaseBreedsList = catsDao.getAll()
-            val domainBreedsList = breedMapper.mapToDomain(databaseBreedsList)
+            val domainBreedsList = breedMapper.mapDatabaseToDomain(databaseBreedsList)
             return domainBreedsList.toMutableList()
         }
     }

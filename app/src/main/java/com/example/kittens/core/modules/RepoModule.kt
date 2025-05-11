@@ -9,8 +9,8 @@ import com.example.kittens.data.ImageProvider
 import org.koin.dsl.module
 
 val repositoryModule = module {
-    single { CatsMapper() }
     single { BreedMapper() }
+    single { CatsMapper(get()) }
     single { CatsRepo(get(), get(), get(), get()) }
     single { BreedsRepo(get(), get(), get(), get()) }
     single<ImageProvider> { GlideImageProvider(get()) }
