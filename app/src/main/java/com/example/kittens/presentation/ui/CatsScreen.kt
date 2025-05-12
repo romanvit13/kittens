@@ -29,7 +29,15 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun CatsScreen(viewModel: CatsViewModel = koinViewModel()) {
     val cats by viewModel.cats.collectAsState()
-    CatsList(cats)
+    val isLoading by viewModel.isLoading.collectAsState()
+
+    if (isLoading) {
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
+            items(6) { FakeCatItem() } // Show 6 shimmer items
+        }
+    } else {
+        CatsList(cats)
+    }
 }
 
 @Composable
@@ -76,9 +84,35 @@ fun CatItem(cat: Cat) {
     }
 }
 
+@Composable
+fun FakeCatItem() {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
+        Column {
+            ShimmerBox(modifier = Modifier
+                .fillMaxWidth()
+                .height(300.dp))
+
+            Column(Modifier.padding(20.dp)) {
+                repeat(4) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    ShimmerBox(modifier = Modifier
+                        .fillMaxWidth()
+                        .height(20.dp))
+                }
+            }
+        }
+    }
+}
+
 
 @Composable
-fun ShimmerBox() {
+fun ShimmerBox(modifier: Modifier) {
     val infiniteTransition = rememberInfiniteTransition(label = "shimmer")
     val alpha by infiniteTransition.animateFloat(
         initialValue = 0.3f, targetValue = 0.8f, animationSpec = infiniteRepeatable(
@@ -87,9 +121,7 @@ fun ShimmerBox() {
     )
 
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(180.dp)
+        modifier = modifier
             .background(Color.LightGray.copy(alpha = alpha), RoundedCornerShape(8.dp))
-    ) {}
+    )
 }

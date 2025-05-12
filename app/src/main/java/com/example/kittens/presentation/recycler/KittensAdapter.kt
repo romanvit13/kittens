@@ -47,13 +47,6 @@ class KittensAdapter(cats: MutableList<Cat>?) : RecyclerView.Adapter<KittensAdap
                 context, mCats!![viewHolder.adapterPosition].id,
                 Toast.LENGTH_SHORT
             ).show()
-//            context.startActivity(
-//                ExpandedActivity.getStartIntent(
-//                    context,
-//                    mCats!![viewHolder.adapterPosition].getId(),
-//                    mCats!![viewHolder.adapterPosition].getImage()
-//                )
-//            )
         }
     }
 
