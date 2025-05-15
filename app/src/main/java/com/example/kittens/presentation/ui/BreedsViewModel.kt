@@ -3,7 +3,8 @@ package com.example.kittens.presentation.ui
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.kittens.data.BreedsRepo
+import com.example.kittens.data.repos.BreedsRepo
+import com.example.kittens.data.repos.FavouriteCatsRepo
 import com.example.kittens.domain.models.Breed
 import kotlinx.coroutines.launch
 

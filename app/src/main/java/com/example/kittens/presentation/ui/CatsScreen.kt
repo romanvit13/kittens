@@ -10,12 +10,18 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -30,27 +36,50 @@ import org.koin.androidx.compose.koinViewModel
 fun CatsScreen(viewModel: CatsViewModel = koinViewModel()) {
     val cats by viewModel.cats.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
+    val favouriteStatus by viewModel.favouriteStatus.collectAsState()
+
+    LaunchedEffect(favouriteStatus) {
+        when (favouriteStatus) {
+            is UiStatus.Success -> {
+                val message = (favouriteStatus as UiStatus.Success).message
+                // Show a snackbar or toast
+                println("SUCCESS: $message")
+            }
+
+            is UiStatus.Error -> {
+                val error = (favouriteStatus as UiStatus.Error).message
+                println("ERROR: $error")
+            }
+
+            else -> {}
+        }
+    }
 
     if (isLoading) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(6) { FakeCatItem() } // Show 6 shimmer items
         }
     } else {
-        CatsList(cats)
+        CatsList(cats, viewModel)
     }
 }
 
 @Composable
-fun CatsList(cats: List<Cat>) {
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
-        items(cats, key = { it.id }) { cat ->
-            CatItem(cat)
+fun CatsList(cats: List<Cat>, viewModel: CatsViewModel) {
+    LazyColumn {
+        items(cats) { cat ->
+            CatItem(cat = cat, onFavouriteClick = { clickedCat ->
+                viewModel.addFavouriteCat(clickedCat.id, null)
+            })
         }
     }
 }
 
 @Composable
-fun CatItem(cat: Cat) {
+fun CatItem(
+    cat: Cat,
+    onFavouriteClick: (Cat) -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -58,27 +87,52 @@ fun CatItem(cat: Cat) {
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
-        Column {
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current).data(cat.url).crossfade(true)
-                    .build(),
-                contentDescription = null,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(300.dp),
-                contentScale = ContentScale.Crop // Optional, affects how it fits in the Composable
-            )
+        Box(modifier = Modifier.fillMaxWidth()) {
+            Column {
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(cat.url)
+                        .crossfade(true)
+                        .build(),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(300.dp),
+                    contentScale = ContentScale.Crop
+                )
 
-            Column(Modifier.padding(20.dp)) {
-                Text(text = "ID: ${cat.id}", style = MaterialTheme.typography.titleLarge)
-                Text(text = "Height: ${cat.height}", style = MaterialTheme.typography.bodyLarge)
-                Text(text = "Width: ${cat.width}", style = MaterialTheme.typography.bodyLarge)
-                if (!cat.breeds.isNullOrEmpty()) {
-                    val firstBreed = cat.breeds[0]
-                    Text(text = firstBreed.name, style = MaterialTheme.typography.bodyLarge)
-                    Text(text = firstBreed.origin, style = MaterialTheme.typography.bodyLarge)
-                    Text(text = firstBreed.temperament, style = MaterialTheme.typography.bodyLarge)
+                Column(Modifier.padding(20.dp)) {
+                    Text(text = "ID: ${cat.id}", style = MaterialTheme.typography.titleLarge)
+                    Text(text = "Height: ${cat.height}", style = MaterialTheme.typography.bodyLarge)
+                    Text(text = "Width: ${cat.width}", style = MaterialTheme.typography.bodyLarge)
+                    if (!cat.breeds.isNullOrEmpty()) {
+                        val firstBreed = cat.breeds[0]
+                        Text(text = firstBreed.name, style = MaterialTheme.typography.bodyLarge)
+                        Text(text = firstBreed.origin, style = MaterialTheme.typography.bodyLarge)
+                        Text(
+                            text = firstBreed.temperament,
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
                 }
+            }
+
+            // Heart Icon Button
+            IconButton(
+                onClick = { onFavouriteClick(cat) },
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(12.dp)
+                    .background(
+                        color = Color.White.copy(alpha = 0.8f),
+                        shape = CircleShape
+                    )
+            ) {
+                Icon(
+                    imageVector = Icons.Default.FavoriteBorder,
+                    contentDescription = "Add to favourites",
+                    tint = Color.Red
+                )
             }
         }
     }
@@ -94,16 +148,20 @@ fun FakeCatItem() {
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column {
-            ShimmerBox(modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp))
+            ShimmerBox(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(300.dp)
+            )
 
             Column(Modifier.padding(20.dp)) {
                 repeat(4) {
                     Spacer(modifier = Modifier.height(8.dp))
-                    ShimmerBox(modifier = Modifier
-                        .fillMaxWidth()
-                        .height(20.dp))
+                    ShimmerBox(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(20.dp)
+                    )
                 }
             }
         }

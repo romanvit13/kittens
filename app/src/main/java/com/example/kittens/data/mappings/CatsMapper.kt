@@ -1,4 +1,4 @@
-package com.example.kittens.data
+package com.example.kittens.data.mappings
 
 import com.example.kittens.data.database.models.Cat as DatabaseCat
 import com.example.kittens.data.database.models.Breed as BreedDatabase

@@ -1,4 +1,4 @@
-package com.example.kittens.data
+package com.example.kittens.data.providers
 
 import android.content.Context
 import android.graphics.Bitmap

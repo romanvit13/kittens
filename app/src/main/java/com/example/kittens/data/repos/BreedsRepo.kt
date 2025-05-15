@@ -1,7 +1,8 @@
-package com.example.kittens.data
+package com.example.kittens.data.repos
 
 import com.example.kittens.common.NetworkUtils
 import com.example.kittens.data.database.BreedDao
+import com.example.kittens.data.mappings.BreedMapper
 import com.example.kittens.data.network.ICatService
 import com.example.kittens.domain.IBreedsRepo
 import com.example.kittens.domain.models.Breed as BreedDomain

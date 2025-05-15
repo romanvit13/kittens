@@ -1,11 +1,13 @@
 package com.example.kittens.core.modules
 
-import com.example.kittens.data.BreedMapper
-import com.example.kittens.data.BreedsRepo
-import com.example.kittens.data.CatsMapper
-import com.example.kittens.data.CatsRepo
-import com.example.kittens.data.GlideImageProvider
-import com.example.kittens.data.ImageProvider
+import com.example.kittens.data.mappings.BreedMapper
+import com.example.kittens.data.repos.BreedsRepo
+import com.example.kittens.data.mappings.CatsMapper
+import com.example.kittens.data.mappings.FavouriteCatsMapper
+import com.example.kittens.data.repos.CatsRepo
+import com.example.kittens.data.providers.GlideImageProvider
+import com.example.kittens.data.providers.ImageProvider
+import com.example.kittens.data.repos.FavouriteCatsRepo
 import org.koin.dsl.module
 
 val repositoryModule = module {
@@ -13,5 +15,7 @@ val repositoryModule = module {
     single { CatsMapper(get()) }
     single { CatsRepo(get(), get(), get(), get()) }
     single { BreedsRepo(get(), get(), get(), get()) }
+    single { FavouriteCatsMapper() }
+    single { FavouriteCatsRepo(get(), get()) }
     single<ImageProvider> { GlideImageProvider(get()) }
 }

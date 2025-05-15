@@ -1,4 +1,4 @@
-package com.example.kittens.presentation.recycler
+package com.example.kittens.presentation.ui.recycler
 
 import android.util.Log
 import android.view.LayoutInflater

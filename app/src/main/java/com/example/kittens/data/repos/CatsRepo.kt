@@ -1,7 +1,8 @@
-package com.example.kittens.data
+package com.example.kittens.data.repos
 
 import com.example.kittens.common.NetworkUtils
 import com.example.kittens.data.database.CatDao
+import com.example.kittens.data.mappings.CatsMapper
 import com.example.kittens.data.network.ICatService
 import com.example.kittens.domain.ICatsRepo
 import com.example.kittens.domain.models.Cat

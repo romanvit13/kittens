@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kittens.databinding.FragmentSecondBinding
-import com.example.kittens.presentation.recycler.KittensAdapter
+import com.example.kittens.presentation.ui.recycler.KittensAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SecondFragment : Fragment() {
