@@ -44,6 +44,10 @@ class FirstFragment : Fragment() {
         binding.openBreeds.setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_breedsFragment)
         }
+
+        binding.showFavCats.setOnClickListener {
+            findNavController().navigate(R.id.action_FirstFragment_to_FavouriteCatsFragment)
+        }
     }
 
     override fun onDestroyView() {

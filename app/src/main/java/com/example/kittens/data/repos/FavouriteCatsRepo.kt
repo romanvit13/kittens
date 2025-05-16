@@ -32,7 +32,7 @@ class FavouriteCatsRepo(
         }
     }
 
-    override suspend fun removeFavouriteCat(favouriteId: Int): Result<String> {
+    override suspend fun removeFavouriteCat(favouriteId: Long): Result<String> {
         return try {
             val response = api.removeFavouriteCat(favouriteId)
             if (response.isSuccessful) {

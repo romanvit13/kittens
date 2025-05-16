@@ -20,6 +20,10 @@
         <action
             android:id="@+id/action_FirstFragment_to_CatsFragment"
             app:destination="@id/CatsFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_FavouriteCatsFragment"
+            app:destination="@id/FavouriteCatsFragment"
+            app:popUpTo="@id/FirstFragment" />
     </fragment>
 
     <fragment
@@ -42,5 +46,10 @@
         android:id="@+id/CatsFragment"
         android:name="com.example.kittens.presentation.ui.CatsFragment"
         android:label="CatsFragment" />
+
+    <fragment
+        android:id="@+id/FavouriteCatsFragment"
+        android:name="com.example.kittens.presentation.ui.FavouriteCatsFragment"
+        android:label="FavouriteCatsFragment" />
 
 </navigation>

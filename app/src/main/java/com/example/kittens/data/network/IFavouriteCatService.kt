@@ -18,5 +18,5 @@ interface IFavouriteCatService {
     suspend fun addFavouriteCat(@Body request: FavouriteCatRequest): Response<SuccessResponse>
 
     @DELETE("/v1/favourites/{favourite_id}")
-    suspend fun removeFavouriteCat(@Path("favourite_id") favouriteId: Int): Response<SuccessResponse>
+    suspend fun removeFavouriteCat(@Path("favourite_id") favouriteId: Long): Response<SuccessResponse>
 }

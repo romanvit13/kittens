@@ -56,4 +56,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/open_breeds" />
 
+    <Button
+        android:id="@+id/show_fav_cats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Favourite cats"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/show_cats_old" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

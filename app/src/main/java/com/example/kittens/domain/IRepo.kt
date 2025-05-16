@@ -21,7 +21,7 @@ interface IFavouriteCatsRepo {
     ): Result<Any>
 
     suspend fun removeFavouriteCat(
-        favouriteId: Int
+        favouriteId: Long
     ): Result<String> // message like "SUCCESS" or error
 
     suspend fun getFavouriteCats(): Result<List<FavouriteCat>>
