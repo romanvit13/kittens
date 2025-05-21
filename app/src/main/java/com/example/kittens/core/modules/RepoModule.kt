@@ -13,7 +13,7 @@ import org.koin.dsl.module
 val repositoryModule = module {
     single { BreedMapper() }
     single { CatsMapper(get()) }
-    single { CatsRepo(get(), get(), get(), get()) }
+    single { CatsRepo(get(), get(), get(), get(), get()) }
     single { BreedsRepo(get(), get(), get(), get()) }
     single { FavouriteCatsMapper() }
     single { FavouriteCatsRepo(get(), get()) }

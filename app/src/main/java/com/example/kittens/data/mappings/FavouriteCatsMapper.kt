@@ -7,6 +7,7 @@ class FavouriteCatsMapper {
     fun mapNetworkToDomain(favouriteCat: FavouriteCatNetwork): FavouriteCatDomain {
         return FavouriteCatDomain(
             favouriteCat.id,
+            favouriteCat.imageId,
             favouriteCat.image.url,
             favouriteCat.createdAt
         )

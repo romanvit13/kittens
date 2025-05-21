@@ -69,7 +69,7 @@ fun CatsList(cats: List<Cat>, viewModel: CatsViewModel) {
     LazyColumn {
         items(cats) { cat ->
             CatItem(cat = cat, onFavouriteClick = { clickedCat ->
-                viewModel.addFavouriteCat(clickedCat.id, null)
+                viewModel.toggleFavourite(cat)
             })
         }
     }

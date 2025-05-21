@@ -6,4 +6,7 @@ data class Cat(
     val width: Int,
     val height: Int,
     val breeds: List<Breed>? = null,
-)
+    val favId: Long?
+) {
+    fun isFavourite() = favId != null
+}

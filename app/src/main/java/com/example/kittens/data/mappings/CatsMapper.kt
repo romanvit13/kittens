@@ -4,6 +4,7 @@ import com.example.kittens.data.database.models.Cat as DatabaseCat
 import com.example.kittens.data.database.models.Breed as BreedDatabase
 import com.example.kittens.data.database.models.CatBreedCrossRef
 import com.example.kittens.data.database.models.CatWithBreeds
+import com.example.kittens.data.network.models.FavouriteCat as NetworkFavouriteCat
 import com.example.kittens.data.network.models.Cat as NetworkCat
 import com.example.kittens.domain.models.Cat as DomainCat
 
@@ -14,6 +15,24 @@ class CatsMapper(private val breedMapper: BreedMapper) {
         val breeds: List<BreedDatabase>,
         val crossRefs: List<CatBreedCrossRef>
     )
+
+    fun mapNetworkToDomainAggregated(
+        networkCats: List<NetworkCat>,
+        favouriteCats: List<NetworkFavouriteCat>
+    ): List<DomainCat> {
+        val favouriteMap = favouriteCats.associateBy { it.imageId }
+
+        return networkCats.map { cat ->
+            val favourite = favouriteMap[cat.id]
+            DomainCat(
+                id = cat.id,
+                url = cat.url,
+                width = cat.width,
+                height = cat.height,
+                favId = favourite?.id
+            )
+        }
+    }
 
     fun mapNetworkToDatabase(networkCats: List<NetworkCat>): CatDatabaseBundle {
         val cats = mutableListOf<DatabaseCat>()
@@ -56,7 +75,8 @@ class CatsMapper(private val breedMapper: BreedMapper) {
                 url = networkCat.url,
                 width = networkCat.width,
                 height = networkCat.height,
-                breeds = networkCat.breeds?.let { breedMapper.mapNetworkToDomain(it) }
+                breeds = networkCat.breeds?.let { breedMapper.mapNetworkToDomain(it) },
+                favId = null,
             )
         }
     }
@@ -68,7 +88,8 @@ class CatsMapper(private val breedMapper: BreedMapper) {
                 url = catWithBreeds.cat.url,
                 width = catWithBreeds.cat.width,
                 height = catWithBreeds.cat.height,
-                breeds = breedMapper.mapDatabaseToDomain(catWithBreeds.breeds)
+                breeds = breedMapper.mapDatabaseToDomain(catWithBreeds.breeds),
+                favId = null,
             )
         }
     }
