@@ -42,7 +42,9 @@ class FavouriteCatsViewModel(
         viewModelScope.launch {
             val result = favouriteCatsRepo.removeFavouriteCat(favouriteCat.id)
             if (result.isSuccess) {
-                obtainFavCats() // Reload data
+                val favCatsMutable = _favCats.value.toMutableList()
+                favCatsMutable.remove(favouriteCat)
+                _favCats.value = favCatsMutable
             } else {
                 Log.e(TAG, "Couldn't remove favourite cat with id: ${favouriteCat.id}")
             }
