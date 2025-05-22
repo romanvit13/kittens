@@ -11,7 +11,7 @@ class FavouriteCatsRepo(
     private val mapper: FavouriteCatsMapper,
 ) : IFavouriteCatsRepo {
 
-    override suspend fun addFavouriteCat(imageId: String, subId: String?): Result<String> {
+    override suspend fun addFavouriteCat(imageId: String, subId: String?): Result<Long?> {
         return try {
             val request = FavouriteCatRequest(imageId, subId)
             val response = api.addFavouriteCat(request)
@@ -19,7 +19,7 @@ class FavouriteCatsRepo(
             if (response.isSuccessful) {
                 val body = response.body()
                 if (body != null) {
-                    Result.success("Favourite cat was added")
+                    Result.success(body.id)
                 } else {
                     Result.failure(Exception("Empty response body when adding a favourite cat"))
                 }
@@ -32,12 +32,11 @@ class FavouriteCatsRepo(
         }
     }
 
-    override suspend fun removeFavouriteCat(favouriteId: Long): Result<String> {
+    override suspend fun removeFavouriteCat(favouriteId: Long): Result<Long?> {
         return try {
             val response = api.removeFavouriteCat(favouriteId)
             if (response.isSuccessful) {
-
-                Result.success("Favourite cat was removed")
+                Result.success(response.body()?.id)
             } else {
                 val errorText = response.errorBody()?.string() ?: "Unknown error"
                 Result.failure(Exception(errorText))

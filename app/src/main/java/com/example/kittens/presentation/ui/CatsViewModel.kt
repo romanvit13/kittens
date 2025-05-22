@@ -32,17 +32,7 @@ class CatsViewModel(
         obtainCats()
     }
 
-    private fun obtainCatsOld() {
-        isLoading.value = true
-        viewModelScope.launch {
-            val catList = repo.obtainCats()
-            _cats.value = catList
-            _catsLive.value = catList
-            isLoading.value = false
-        }
-    }
-
-    private fun obtainCats() {
+    fun obtainCats() {
         isLoading.value = true
         viewModelScope.launch {
             val allCats = repo.obtainCats()
@@ -67,25 +57,28 @@ class CatsViewModel(
     fun toggleFavourite(cat: Cat) {
         viewModelScope.launch {
             _favouriteStatus.value = UiStatus.Loading
-            val result = if (cat.isFavourite()) {
-                favouriteCatsRepo.removeFavouriteCat(cat.favId!!)
-                    .fold(
-                        onSuccess = { UiStatus.Success("Removed from favourites") },
-                        onFailure = { UiStatus.Error(it.message ?: "Unknown error") }
-                    )
+
+            val result: Result<Long?> = if (cat.isFavourite()) {
+                cat.favId?.let {
+                    favouriteCatsRepo.removeFavouriteCat(it)
+                } ?: Result.failure(Exception("Missing favId"))
             } else {
-                favouriteCatsRepo.addFavouriteCat(cat.id, null)
-                    .fold(
-                        onSuccess = { UiStatus.Success("Added to favourites") },
-                        onFailure = { UiStatus.Error(it.message ?: "Unknown error") }
-                    )
+                favouriteCatsRepo.addFavouriteCat(cat.id)
             }
-            _favouriteStatus.value = result
-            // update UI with new fav state
-            val updatedList = _cats.value.map {
-                if (it.id == cat.id) it.copy(favId = cat.favId) else it
-            }
-            _cats.value = updatedList
+
+            result.fold(
+                onSuccess = { favId ->
+                    _cats.value = _cats.value.map { currentCat ->
+                        if (currentCat.id == cat.id) {
+                            currentCat.copy(favId = favId)
+                        } else currentCat
+                    }
+                    _favouriteStatus.value = UiStatus.Success("Updated successfully")
+                },
+                onFailure = { error ->
+                    _favouriteStatus.value = UiStatus.Error(error.message ?: "Unknown error")
+                }
+            )
         }
     }
 }

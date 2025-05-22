@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -42,7 +43,7 @@ fun CatsScreen(viewModel: CatsViewModel = koinViewModel()) {
         when (favouriteStatus) {
             is UiStatus.Success -> {
                 val message = (favouriteStatus as UiStatus.Success).message
-                // Show a snackbar or toast
+                // Show a snack bar or toast
                 println("SUCCESS: $message")
             }
 
@@ -129,9 +130,9 @@ fun CatItem(
                     )
             ) {
                 Icon(
-                    imageVector = Icons.Default.FavoriteBorder,
-                    contentDescription = "Add to favourites",
-                    tint = Color.Red
+                    imageVector = if (cat.isFavourite()) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                    contentDescription = if (cat.isFavourite()) "Remove from favourites" else "Add to favourites",
+                    tint = Color.Red,
                 )
             }
         }

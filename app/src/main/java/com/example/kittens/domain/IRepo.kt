@@ -18,11 +18,11 @@ interface IFavouriteCatsRepo {
     suspend fun addFavouriteCat(
         imageId: String,
         subId: String? = null
-    ): Result<Any>
+    ): Result<Long?>
 
     suspend fun removeFavouriteCat(
         favouriteId: Long
-    ): Result<String> // message like "SUCCESS" or error
+    ): Result<Long?> // message like "SUCCESS" or error
 
     suspend fun getFavouriteCats(): Result<List<FavouriteCat>>
 }
