@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/CatsFragment">
 
     <fragment
         android:id="@+id/FirstFragment"
@@ -45,7 +45,14 @@
     <fragment
         android:id="@+id/CatsFragment"
         android:name="com.example.kittens.presentation.ui.CatsFragment"
-        android:label="CatsFragment" />
+        android:label="CatsFragment" >
+        <action
+            android:id="@+id/action_CatsFragment_to_FavouriteCatsFragment"
+            app:destination="@id/FavouriteCatsFragment" />
+        <action
+            android:id="@+id/action_CatsFragment_to_breedsFragment"
+            app:destination="@id/breedsFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/FavouriteCatsFragment"
