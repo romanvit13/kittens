@@ -49,9 +49,7 @@ class FavouriteCatsRepo(
     override suspend fun getFavouriteCats(): Result<List<FavouriteCat>> {
         return try {
             val response = api.getFavouriteCats()
-            val domainCats = response.map { networkCats ->
-                mapper.mapNetworkToDomain(networkCats)
-            }
+            val domainCats = mapper.mapNetworkToDomain(response).reversed() // Pop last favourite cat
             Result.success(domainCats)
         } catch (e: Exception) {
             Result.failure(e)
