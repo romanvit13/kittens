@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
+import com.example.kittens.presentation.ui.compose.BreedsScreen
 
 class BreedsFragment : Fragment() {
     override fun onCreateView(

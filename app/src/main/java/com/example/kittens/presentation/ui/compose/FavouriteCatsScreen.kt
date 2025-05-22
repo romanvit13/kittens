@@ -1,5 +1,6 @@
-package com.example.kittens.presentation.ui
+package com.example.kittens.presentation.ui.compose
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
@@ -34,6 +36,8 @@ import org.koin.androidx.compose.koinViewModel
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Icon
+import androidx.compose.ui.graphics.Color
+import com.example.kittens.presentation.ui.FavouriteCatsViewModel
 
 @Composable
 fun FavouriteCatsScreen(viewModel: FavouriteCatsViewModel = koinViewModel()) {
@@ -88,9 +92,9 @@ fun FavouriteCatItem(
                     contentScale = ContentScale.Crop
                 )
 
-                Column(Modifier.padding(20.dp)) {
-                    Text(text = "ID: ${cat.id}", style = MaterialTheme.typography.titleLarge)
-                }
+//                Column(Modifier.padding(20.dp)) {
+//                    Text(text = "ID: ${cat.id}", style = MaterialTheme.typography.titleLarge)
+//                }
             }
 
             IconButton(
@@ -98,6 +102,10 @@ fun FavouriteCatItem(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(12.dp)
+                    .background(
+                        color = Color.White.copy(alpha = 0.8f),
+                        shape = CircleShape
+                    )
             ) {
                 Icon(
                     imageVector = Icons.Default.Delete,

@@ -1,4 +1,4 @@
-package com.example.kittens.presentation.ui
+package com.example.kittens.presentation.ui.compose
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -25,12 +25,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.kittens.domain.models.Cat
+import com.example.kittens.presentation.ui.CatsViewModel
+import com.example.kittens.presentation.ui.UiStatus
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -102,10 +105,10 @@ fun CatItem(
                     contentScale = ContentScale.Crop
                 )
 
-                Column(Modifier.padding(20.dp)) {
-                    Text(text = "ID: ${cat.id}", style = MaterialTheme.typography.titleLarge)
-                    Text(text = "Height: ${cat.height}", style = MaterialTheme.typography.bodyLarge)
-                    Text(text = "Width: ${cat.width}", style = MaterialTheme.typography.bodyLarge)
+                Column {
+                    //Text(text = "ID: ${cat.id}", style = MaterialTheme.typography.titleLarge)
+                    //Text(text = "Height: ${cat.height}", style = MaterialTheme.typography.bodyLarge)
+                    //Text(text = "Width: ${cat.width}", style = MaterialTheme.typography.bodyLarge)
                     if (!cat.breeds.isNullOrEmpty()) {
                         val firstBreed = cat.breeds[0]
                         Text(text = firstBreed.name, style = MaterialTheme.typography.bodyLarge)
@@ -148,27 +151,30 @@ fun FakeCatItem() {
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
-        Column {
-            ShimmerBox(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(300.dp)
-            )
+        Box(modifier = Modifier.fillMaxWidth()) {
+            Column {
+                ShimmerBox(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(300.dp)
+                )
+            }
 
-            Column(Modifier.padding(20.dp)) {
-                repeat(4) {
-                    Spacer(modifier = Modifier.height(8.dp))
-                    ShimmerBox(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(20.dp)
+            IconButton(
+                onClick = {},
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(12.dp)
+                    .background(
+                        color = Color.White.copy(alpha = 0.8f),
+                        shape = CircleShape
                     )
-                }
+            ) {
+
             }
         }
     }
 }
-
 
 @Composable
 fun ShimmerBox(modifier: Modifier) {

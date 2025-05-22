@@ -6,7 +6,7 @@
         android:id="@+id/action_favourites"
         android:orderInCategory="50"
         android:title="@string/action_favourites"
-        android:icon="@drawable/ic_favorite"
+        android:icon="@drawable/ic_favourite_outline"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_breeds_info"
