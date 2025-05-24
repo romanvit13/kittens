@@ -9,7 +9,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -17,10 +17,9 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,42 +35,41 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun CatsScreen(viewModel: CatsViewModel = koinViewModel()) {
     val cats by viewModel.cats.collectAsState()
-    val isLoading by viewModel.isLoading.collectAsState()
-    val favouriteStatus by viewModel.favouriteStatus.collectAsState()
+    val isInitialLoading by viewModel.isLoading.collectAsState()
+    val isLoadingMore by viewModel.isLoadingMore.collectAsState()
 
-    LaunchedEffect(favouriteStatus) {
-        when (favouriteStatus) {
-            is UiStatus.Success -> {
-                val message = (favouriteStatus as UiStatus.Success).message
-                // Show a snack bar or toast
-                println("SUCCESS: $message")
-            }
-
-            is UiStatus.Error -> {
-                val error = (favouriteStatus as UiStatus.Error).message
-                println("ERROR: $error")
-            }
-
-            else -> {}
-        }
-    }
-
-    if (isLoading) {
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(6) { FakeCatItem() } // Show 6 shimmer items
-        }
-    } else {
-        CatsList(cats, viewModel)
-    }
-}
-
-@Composable
-fun CatsList(cats: List<Cat>, viewModel: CatsViewModel) {
     LazyColumn {
-        items(cats) { cat ->
-            CatItem(cat = cat, onFavouriteClick = { clickedCat ->
-                viewModel.toggleFavourite(cat)
-            })
+        when {
+            isInitialLoading -> {
+                items(6) {
+                    FakeCatItem()
+                }
+            }
+
+            else -> {
+                itemsIndexed(cats) { index, cat ->
+                    CatItem(cat = cat, onFavouriteClick = {
+                        viewModel.toggleFavourite(cat)
+                    })
+
+                    if (index == cats.lastIndex - 3) {
+                        viewModel.loadMoreCats()
+                    }
+                }
+
+                if (isLoadingMore) {
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator()
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -102,20 +100,20 @@ fun CatItem(
                     contentScale = ContentScale.Crop
                 )
 
-                Column(Modifier.padding(20.dp)) {
-                    Text(text = "ID: ${cat.id}", style = MaterialTheme.typography.titleLarge)
-                    Text(text = "Height: ${cat.height}", style = MaterialTheme.typography.bodyLarge)
-                    Text(text = "Width: ${cat.width}", style = MaterialTheme.typography.bodyLarge)
-                    if (!cat.breeds.isNullOrEmpty()) {
-                        val firstBreed = cat.breeds[0]
-                        Text(text = firstBreed.name, style = MaterialTheme.typography.bodyLarge)
-                        Text(text = firstBreed.origin, style = MaterialTheme.typography.bodyLarge)
-                        Text(
-                            text = firstBreed.temperament,
-                            style = MaterialTheme.typography.bodyLarge
-                        )
-                    }
-                }
+//                Column(Modifier.padding(20.dp)) {
+//                    Text(text = "ID: ${cat.id}", style = MaterialTheme.typography.titleLarge)
+//                    Text(text = "Height: ${cat.height}", style = MaterialTheme.typography.bodyLarge)
+//                    Text(text = "Width: ${cat.width}", style = MaterialTheme.typography.bodyLarge)
+//                    if (!cat.breeds.isNullOrEmpty()) {
+//                        val firstBreed = cat.breeds[0]
+//                        Text(text = firstBreed.name, style = MaterialTheme.typography.bodyLarge)
+//                        Text(text = firstBreed.origin, style = MaterialTheme.typography.bodyLarge)
+//                        Text(
+//                            text = firstBreed.temperament,
+//                            style = MaterialTheme.typography.bodyLarge
+//                        )
+//                    }
+//                }
             }
 
             // Heart Icon Button

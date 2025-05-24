@@ -28,6 +28,11 @@ class CatsViewModel(
 
     val isLoading = MutableStateFlow(true)
 
+    private var currentPage = 0
+    private var isLastPage = false
+
+    val isLoadingMore = MutableStateFlow(false)
+
     init {
         obtainCats()
     }
@@ -40,6 +45,25 @@ class CatsViewModel(
             _cats.value = allCats
             _catsLive.value = allCats
             isLoading.value = false
+        }
+    }
+
+    fun loadMoreCats() {
+        if (isLoadingMore.value || isLastPage) return
+
+        isLoadingMore.value = true
+        viewModelScope.launch {
+            val newCats = repo.obtainCats()
+
+            if (newCats.isEmpty()) {
+                isLastPage = true
+            } else {
+                _cats.value = _cats.value + newCats
+                _catsLive.value = _cats.value
+            }
+
+            isLoadingMore.value = false
+            currentPage++
         }
     }
 
