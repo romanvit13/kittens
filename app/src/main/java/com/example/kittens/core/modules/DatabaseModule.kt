@@ -9,11 +9,12 @@ import org.koin.dsl.module
 val databaseModule = module {
     single { get<AppDatabase>().catDao() }
     single { get<AppDatabase>().breedDao() }
+    single { get<AppDatabase>().favouriteCatDao() }
 
     single {
         Room.databaseBuilder(
             get(), AppDatabase::class.java, "kittens-database"
-        ).addMigrations(MIGRATION_1_2, MIGRATION_2_3).build()
+        ).addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4).build()
     }
 }
 
@@ -66,6 +67,24 @@ val MIGRATION_2_3 = object : Migration(2, 3) {
 
         db.execSQL(
             "CREATE INDEX IF NOT EXISTS `index_CatBreedCrossRef_breedId` ON `CatBreedCrossRef` (`breedId`)"
+        )
+    }
+}
+
+val MIGRATION_3_4 = object : Migration(3, 4) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL(
+            """
+            CREATE TABLE IF NOT EXISTS `FavouriteCat` (
+                `id` INTEGER NOT NULL,
+                `userId` TEXT,
+                `imageId` TEXT NOT NULL,
+                `subId` TEXT,
+                `createdAt` TEXT NOT NULL,
+                `imageUrl` TEXT NOT NULL,
+                PRIMARY KEY(`id`)
+            )
+            """.trimIndent()
         )
     }
 }

@@ -16,6 +16,6 @@ val repositoryModule = module {
     single { CatsRepo(get(), get(), get(), get(), get()) }
     single { BreedsRepo(get(), get(), get(), get()) }
     single { FavouriteCatsMapper() }
-    single { FavouriteCatsRepo(get(), get()) }
+    single { FavouriteCatsRepo(get(), get(), get(), get()) }
     single<ImageProvider> { GlideImageProvider(get()) }
 }

@@ -1,5 +1,7 @@
 package com.example.kittens.data.repos
 
+import com.example.kittens.common.NetworkUtils
+import com.example.kittens.data.database.FavouriteCatDao
 import com.example.kittens.data.mappings.FavouriteCatsMapper
 import com.example.kittens.data.network.IFavouriteCatService
 import com.example.kittens.data.network.models.FavouriteCatRequest
@@ -8,7 +10,9 @@ import com.example.kittens.domain.models.FavouriteCat
 
 class FavouriteCatsRepo(
     private val api: IFavouriteCatService,
+    private val dao: FavouriteCatDao,
     private val mapper: FavouriteCatsMapper,
+    private val networkUtils: NetworkUtils,
 ) : IFavouriteCatsRepo {
 
     override suspend fun addFavouriteCat(imageId: String, subId: String?): Result<Long?> {
@@ -47,12 +51,23 @@ class FavouriteCatsRepo(
     }
 
     override suspend fun getFavouriteCats(): Result<List<FavouriteCat>> {
-        return try {
-            val response = api.getFavouriteCats()
-            val domainCats = mapper.mapNetworkToDomain(response).reversed() // Pop last favourite cat
-            Result.success(domainCats)
-        } catch (e: Exception) {
-            Result.failure(e)
+        if (networkUtils.isNetworkAvailable()) {
+            return try {
+                val response = api.getFavouriteCats()
+                val domainCats = mapper.mapNetworkToDomain(response).reversed()
+
+                val databaseCats = mapper.mapNetworkToDatabase(response)
+                dao.removeAllFavouriteCats()
+                dao.insertFavouriteCats(databaseCats)
+
+                Result.success(domainCats)
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        } else {
+            val databaseCats = dao.getFavouriteCats()
+            val domainCats = mapper.mapDatabaseToDomain(databaseCats)
+            return Result.success(domainCats.toMutableList())
         }
     }
 }
